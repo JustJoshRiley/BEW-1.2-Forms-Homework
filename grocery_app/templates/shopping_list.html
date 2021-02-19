@@ -1,0 +1,13 @@
+{% extends 'base.html' %} {% block content %}
+
+<h1>{{current_user.username}}'s Shopping List:</h1>
+<ul>
+    {% for item in current_user.shopping_list_items %}
+    <li>
+        <a href="/item/{{item.id}}">{{item.name}}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+
+{% endblock %}
