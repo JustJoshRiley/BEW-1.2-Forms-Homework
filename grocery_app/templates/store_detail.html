@@ -1,9 +1,10 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 
 <h1>Store - {{ store.title }}</h1>
 
 <strong>Address:</strong> {{ store.address }}
+
+<p><strong>Created By:</strong> {{store.created_by.username}}</p>
 
 <h2>Items</h2>
 
@@ -11,27 +12,40 @@
     {% for item in store.items %}
     <div class="item-details">
         <a href="/item/{{ item.id }}"><img src="{{ item.photo_url }}" alt="{{ item.name }}" width="200px">
-        <p><strong>{{ item.name }}</strong></p></a>
+            <p><strong>{{ item.name }}</strong></p>
+        </a>
         <p><strong>Price: ${{ item.price }}</strong></p>
     </div>
     {% endfor %}
 </div>
 
-
+{% if current_user.id == store.created_by_id%}
 <h2>Edit Store</h2>
 
-<form>
+<form method="POST" action="/store/{{store.id}}">
+    {{ form.csrf_token }}
     <fieldset>
-        <legend>Please enter your information:</legend>
+        <legend>Please enter your store information:</legend>
 
+        <!-- Title Form -->
+        {{ form.title.label }} {{ form.title }}
 
+        <ul>
+            {% for error in form.title.errors %}
+            <li style="color: red">{{error}}</li>
+            {% endfor %}
+        </ul>
 
-        <!-- TODO: Remove the next paragraph and use the `form` object passed in 
-            from the route to render a form. -->
-        <p><em>Form fields go here!</em></p>
+        <!-- Address Form -->
+        {{ form.address.label }} {{ form.address }}
+
+        <ul>
+            {% for error in form.address.errors %}
+            <li style="color: red">{{error}}</li>
+            {% endfor %}
+        </ul>
 
         <input type="submit" value="Submit">
     </fieldset>
 </form>
-
-{% endblock %}
+{% endif %} {% endblock %}

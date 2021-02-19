@@ -1,5 +1,4 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 
 <h1>Item - {{ item.name }}</h1>
 
@@ -11,21 +10,61 @@
 
 <p><strong>Store:</strong> {{ item.store.title }}</p>
 
-
+{% if current_user.id == item.created_by_id%}
 <h2>Edit Item</h2>
 
-<form>
+<form method="POST" action="/item/{{item.id}}">
+    {{ form.csrf_token }}
     <fieldset>
-        <legend>Please enter your information:</legend>
+        <legend>Please enter your item information:</legend>
 
+        <!-- Name form -->
+        {{ form.name.label }} {{ form.name }}
 
+        <ul>
+            {% for error in form.name.errors %}
+            <li style="color: red">{{error}}</li>
+            {% endfor %}
+        </ul>
 
-        <!-- TODO: Remove the next paragraph and use the `form` object passed in 
-            from the route to render a form. -->
-        <p><em>Form fields go here!</em></p>
+        <!-- Price form -->
+        {{ form.price.label }} {{ form.price }}
+
+        <ul>
+            {% for error in form.price.errors %}
+            <li style="color: red">{{error}}</li>
+            {% endfor %}
+        </ul>
+
+        <!-- Category form -->
+        {{ form.category.label }} {{ form.category }}
+
+        <ul>
+            {% for error in form.category.errors %}
+            <li style="color: rgb(211, 210, 210)">{{error}}</li>
+            {% endfor %}
+        </ul>
+
+        <!-- Photo form -->
+        {{ form.photo_url.label }} {{ form.photo_url }}
+
+        <ul>
+            {% for error in form.photo_url.errors %}
+            <li style="color: red">{{error}}</li>
+            {% endfor %}
+        </ul>
+
+        <!-- Store form -->
+        {{ form.store.label }} {{ form.store }}
+
+        <ul>
+            {% for error in form.store.errors %}
+            <li style="color: red">{{error}}</li>
+            {% endfor %}
+        </ul>
+
 
         <input type="submit" value="Submit">
     </fieldset>
 </form>
-
-{% endblock %}
+{% endif %} {% endblock %}
